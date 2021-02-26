@@ -24,26 +24,50 @@ public class NotesFragment extends Fragment {
 
     private List<Note> fNotes = new ArrayList<Note>();
     private boolean fIsLandscapeOrientation;
+    private final String SAVE_STATE_KEY = "save_state_key";
+    private int stateValue = 1;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initNoteArray();
+    }
+
+    private void initNoteArray() {
+        fNotes.add(new Note("Математика", "Задача 12, 13б, 14", "01.02.2021"));
+        fNotes.add(new Note("Русский", "Упражнение 122, 123a, 124", "01.02.2021"));
+        fNotes.add(new Note("Английский", "Стр 30 Текст 2, упр.2а, 2б", "01.02.2021"));
+        fNotes.add(new Note("Физика", "Параграф  44, 13б, 14", "01.02.2021"));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        try {
+            return inflater.inflate(R.layout.fragment_notes, container, false);
+        } catch (Exception e) {
+            Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
+            toast.show();
+            return inflater.inflate(R.layout.fragment_notes, container, false);
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initArrayNotes(view);
         fIsLandscapeOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        try {
+            if (savedInstanceState == null) {
+                initArrayTV(view);
+            }
+        } catch (Exception e) {
+            Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
-    private void initArrayNotes(View pView) {
-        fNotes.add(new Note("Математика", "Задача 12, 13б, 14", "01.02.2021"));
-        fNotes.add(new Note("Русский", "Упражнение 122, 123a, 124", "01.02.2021"));
-        fNotes.add(new Note("Английский", "Стр 30 Текст 2, упр.2а, 2б", "01.02.2021"));
-        fNotes.add(new Note("Физика", "Параграф  44, 13б, 14", "01.02.2021"));
+    private void initArrayTV(View pView) {
         LinearLayout xLayout = (LinearLayout) pView;
         int xPadding = getResources().getDimensionPixelSize(R.dimen.note_margin);
         for (int i = 0; i < fNotes.size(); i++) {
@@ -55,7 +79,7 @@ public class NotesFragment extends Fragment {
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    checkOrientation(xCurrNote);
+                    openNoteDescFrag(xCurrNote);
                 }
             });
             tv.setTextSize(30);
@@ -63,30 +87,26 @@ public class NotesFragment extends Fragment {
         }
     }
 
-    private void checkOrientation(Note pCurrNote){
-        if(fIsLandscapeOrientation)
-            openNoteDescFrag(pCurrNote);
-        else
-            startNoteDescriptionActivity(pCurrNote);
-    }
-
-    private void openNoteDescFrag(Note pCurrNote){
-        NoteDescriptionFragment xFrag = NoteDescriptionFragment.newInstance(pCurrNote);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_container, xFrag)
-                .commit();
-    }
-
-    private void startNoteDescriptionActivity(Note pCurrNote) {
+    private void openNoteDescFrag(Note pCurrNote) {
         try {
-            Intent xIntent = new Intent(getActivity(), DescNotesActivity.class);
-            xIntent.putExtra(NoteDescriptionFragment.class.getSimpleName(), pCurrNote);
-            startActivity(xIntent);
-        } catch (Exception e)
-        {
-            Toast toast = Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT);
+            NoteDescriptionFragment xFrag = NoteDescriptionFragment.newInstance(pCurrNote);
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.drawer_layout, xFrag)
+                    .commit();
+        } catch (Exception e) {
+            Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
             toast.show();
         }
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVE_STATE_KEY, stateValue);
+        super.onSaveInstanceState(outState);
+    }
+
+
 }

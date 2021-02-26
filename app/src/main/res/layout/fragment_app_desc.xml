@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context=".NoteDescriptionFragment">
+    <TextView
+        android:id="@+id/tv_Title"
+        android:layout_weight="0"
+        android:text="@string/app_name"
+        style="@style/tv_text_title_style"/>
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_weight="0"
+        android:text="@string/date"
+        style="@style/tv_date_text_style"/>
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_weight="1"
+        android:text="@string/appDescription"
+        style="@style/tv_text_desc_style"/>
+
+</LinearLayout>
