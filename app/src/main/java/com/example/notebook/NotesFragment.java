@@ -93,7 +93,7 @@ public class NotesFragment extends Fragment {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.drawer_layout, xFrag)
+                    .replace(R.id.fragment_container, xFrag)
                     .commit();
         } catch (Exception e) {
             Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);

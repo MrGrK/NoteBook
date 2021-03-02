@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
        try{
         setContentView(R.layout.activity_main);
         initView();
-        initFragment();
+        //initFragment();
        }
        catch (Exception e)
        {
@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Здесь определяем меню приложения (активити)
-        getMenuInflater().inflate(R.menu.navigation_menu, menu);
+        try{
+        getMenuInflater().inflate(R.menu.tool_menu, menu);
         MenuItem search = menu.findItem(R.id.action_search); // поиск пункта меню поиска
         SearchView searchText = (SearchView) search.getActionView(); // строка поиска
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -131,14 +132,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
+        }
+        catch (Exception e)
+        {
+            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+            toast.show();
+        }
         return true;
     }
 
     private void addFragment(Fragment fragment) {
         FragmentManager fragManager = getSupportFragmentManager();
         FragmentTransaction fragTransaction = fragManager.beginTransaction();
-        fragTransaction.replace(R.id.drawer_layout, fragment);
+        fragTransaction.replace(R.id.fragment_container, fragment);
         fragTransaction.addToBackStack(null);
         fragTransaction.commit();
     }

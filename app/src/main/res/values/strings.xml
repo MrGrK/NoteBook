@@ -12,5 +12,10 @@
     <string name="appDescription">Приложение для создания и редактирования заметок. Версия 0.0.1. Все права защищены. Разработчик KoshAndCo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="fragment_navigation">ВЫ ЕБАНУЛИСЬ</string>
+    <string name="fragment_navigation">Fragment Navigation</string>
+    <string name="favorite">Favorite</string>
+    <string name="main">Main</string>
+    <string name="add">add</string>
+    <string name="item1">item 1</string>
+    <string name="item2">item 2</string>
 </resources>
