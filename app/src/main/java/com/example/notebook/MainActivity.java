@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
        try{
         setContentView(R.layout.activity_main);
         initView();
-        //initFragment();
+        if(savedInstanceState==null)
+            initFragment();
        }
        catch (Exception e)
        {
            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
            toast.show();
        }
-     //   initFragment();
     }
 
     private void initView() {
@@ -108,37 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Здесь определяем меню приложения (активити)
-        try{
-        getMenuInflater().inflate(R.menu.tool_menu, menu);
-        MenuItem search = menu.findItem(R.id.action_search); // поиск пункта меню поиска
-        SearchView searchText = (SearchView) search.getActionView(); // строка поиска
-        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // реагирует на конец ввода поиска
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-            // реагирует на нажатие каждой клавиши
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
-        }
-        catch (Exception e)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        return true;
     }
 
     private void addFragment(Fragment fragment) {

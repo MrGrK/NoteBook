@@ -6,10 +6,10 @@
         android:orderInCategory="100"
         android:title="@string/desc" />
     <item
-        android:id="@+id/action_main"
+        android:id="@+id/action_add"
         android:icon="@android:drawable/ic_menu_compass"
         android:orderInCategory="10"
-        android:title="@string/item1"/>
+        android:title="@string/add_note"/>
     <item
         android:id="@+id/note_list"
         android:icon="@android:drawable/btn_star_big_on"
