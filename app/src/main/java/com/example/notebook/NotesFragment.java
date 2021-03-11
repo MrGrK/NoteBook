@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +17,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notebook.adapter.NotesAdapter;
+import com.example.notebook.adapter.NotesAdapterCallback;
+import com.example.notebook.adapter.NotesSpaceDecoratot;
+
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements NotesAdapterCallback {
 
     private List<Note> fNotes = new ArrayList<Note>();
-    private boolean fIsLandscapeOrientation;
     private final String SAVE_STATE_KEY = "save_state_key";
     private int stateValue = 1;
+    private NotesAdapter notesAdapter = new NotesAdapter(this);
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,35 +63,24 @@ public class NotesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fIsLandscapeOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        try {
-            if (savedInstanceState == null) {
-                initArrayTV(view);
-            }
-        } catch (Exception e) {
-            Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
-            toast.show();
+        if (savedInstanceState == null) {
+            initView(view);
         }
     }
 
-    private void initArrayTV(View pView) {
-        LinearLayout xLayout = (LinearLayout) pView;
-        int xPadding = getResources().getDimensionPixelSize(R.dimen.note_margin);
-        for (int i = 0; i < fNotes.size(); i++) {
-            String xNoteTitle = fNotes.get(i).getfTitle();
-            TextView tv = new TextView(xLayout.getContext());
-            tv.setText(xNoteTitle);
-            tv.setPadding(xPadding, xPadding, xPadding, xPadding);
-            Note xCurrNote = fNotes.get(i);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openNoteDescFrag(xCurrNote);
-                }
-            });
-            tv.setTextSize(30);
-            xLayout.addView(tv);
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        notesAdapter.setItems(fNotes);
+
+    }
+
+    private void initView(View view) {
+        RecyclerView rcView = view.findViewById(R.id.rv_notes);
+        rcView.setLayoutManager(new LinearLayoutManager(rcView.getContext()));
+        rcView.addItemDecoration(new NotesSpaceDecoratot(getResources().getDimensionPixelSize(R.dimen.default_margin)) );
+        rcView.setAdapter(notesAdapter);
+
     }
 
     private void openNoteDescFrag(Note pCurrNote) {
@@ -101,12 +97,14 @@ public class NotesFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVE_STATE_KEY, stateValue);
         super.onSaveInstanceState(outState);
     }
 
-
+    @Override
+    public void onOnItemClick(Note note) {
+        openNoteDescFrag(note);
+    }
 }
