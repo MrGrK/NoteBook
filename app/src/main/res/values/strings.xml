@@ -4,4 +4,14 @@
     <string name="test">test</string>
     <string name="date">01.01.2021</string>
     <string name="title">Title</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="desc">О программе</string>
+    <string name="note_list">Список заметок</string>
+    <string name="appDescription">Приложение для создания и редактирования заметок. Версия 0.0.1. Все права защищены. Разработчик KoshAndCo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="fragment_navigation">Навигация</string>
+    <string name="main">Main</string>
+    <string name="add">Добавить</string>
+
 </resources>
